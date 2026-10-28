@@ -118,6 +118,37 @@
   });
 
   document.querySelector('#year').textContent = String(new Date().getFullYear());
+  const guideLauncher = document.querySelector('#guide-launcher');
+  const guideLoadStatus = document.querySelector('.guide-launcher-status');
+  let toggleGuide;
+  let guideAttempt = 0;
+  guideLauncher.hidden = false;
+  guideLauncher.addEventListener('click', async () => {
+    if (toggleGuide) {
+      toggleGuide();
+      return;
+    }
+    guideLauncher.disabled = true;
+    guideLauncher.setAttribute('aria-busy', 'true');
+    guideLauncher.querySelector('span').textContent = 'Opening guide...';
+    guideLoadStatus.hidden = true;
+    try {
+      // Browsers cache failed module loads; explicit retries need a fresh URL.
+      const moduleUrl = `./portfolio-guide.mjs${guideAttempt ? `?retry=${guideAttempt}` : ''}`;
+      const { initializeGuide } = await import(moduleUrl);
+      toggleGuide = await initializeGuide(guideLauncher, guideAttempt);
+      toggleGuide();
+    } catch (error) {
+      guideAttempt++;
+      console.error('Unable to load portfolio guide:', error);
+      guideLoadStatus.querySelector('span').textContent = 'The guide could not load. Please try the button again.';
+      guideLoadStatus.hidden = false;
+    } finally {
+      guideLauncher.disabled = false;
+      guideLauncher.removeAttribute('aria-busy');
+      guideLauncher.querySelector('span').textContent = 'Ask about me';
+    }
+  });
   updateMotionButton();
   requestUpdate();
 })();

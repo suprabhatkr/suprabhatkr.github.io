@@ -224,6 +224,12 @@ details[open] summary > span { transform: rotate(90deg); }
 .scroll-progress { position: fixed; top: 0; left: 0; right: 0; height: 2px; z-index: 15; pointer-events: none; }
 .scroll-progress > span { display: block; height: 100%; background: var(--orange); transform: scaleX(0); transform-origin: left; }
 .motion-paused .vehicle, .motion-paused .landscape-art, .motion-paused .scene-cloud { will-change: auto; }
+.guide-launcher { position: fixed; right: max(24px, env(safe-area-inset-right)); bottom: max(24px, env(safe-area-inset-bottom)); z-index: 12; display: inline-flex; align-items: center; gap: 10px; min-height: 50px; padding: 13px 18px; border: 1px solid #6f8b70; border-radius: 30px; background: var(--ink); color: var(--paper); box-shadow: 0 5px 20px #203d3426; font-size: 11px; font-weight: 550; transition: background .2s; }
+.guide-launcher:hover { background: var(--green); }
+.guide-launcher:disabled { cursor: wait; opacity: .8; }
+.guide-launcher[hidden], .guide-launcher-status[hidden] { display: none; }
+.guide-launcher-status { position: fixed; bottom: 88px; right: 24px; z-index: 12; width: min(290px, calc(100% - 48px)); padding: 15px; border: 1px solid var(--line); border-radius: 8px; background: var(--white); box-shadow: 0 5px 20px #203d341a; font-size: 12px; line-height: 1.7; }
+.guide-launcher-status a { display: block; color: var(--green); text-decoration: underline; text-underline-offset: 3px; }
 
 @media (min-width: 1600px) {
   .hero-content { padding-top: 80px; padding-bottom: 55px; }
